@@ -1,0 +1,66 @@
+.history_container {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: auto;
+    max-height: 421px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.header-history {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 30px;
+    padding: 5px;
+    padding-left: 15px;
+    background-color: rgb(32, 29, 77) !important;
+    color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.emri-line{
+    width: 100%;
+    display: flex;
+   
+}
+
+.emri-line span{
+    width: 100%;
+}
+
+span.line {
+    width: -webkit-fill-available;
+    border-bottom: 1px solid rgb(219, 215, 215);
+    margin-right: 20px;
+    margin-bottom: 8px;
+}
+
+.clockInRow {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 15px ;
+}
+
+.END{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: rgba(61, 168, 61, 0.767);
+    color: white;
+    width: 60px;
+    height: 25px;
+}
+
+.row_container {
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}

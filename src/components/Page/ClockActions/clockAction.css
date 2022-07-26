@@ -1,0 +1,50 @@
+.actions_container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 200px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.header-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+    padding-left: 15px;
+    background-color: rgb(32, 29, 77) !important;
+    color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.body-actions {
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-left: 15px;
+}
+
+.clock-button {
+    display: flex;
+    flex-direction: row;
+    gap: 10px
+}
+
+ .popup {
+    width: 120px;
+    background-color: rgb(214, 214, 214);
+    max-height: auto;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.popup:hover {
+    cursor: pointer;
+}
+
+.popupScroll {
+    overflow-x: scroll;
+    max-height: 100px;
+} 
