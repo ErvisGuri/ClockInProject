@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import ScrollToBottom from "react-scroll-to-bottom";
 import { MoreOutlined } from "@ant-design/icons";
 import Employee from "../../../DataFake";
+import moment from "moment";
+
+import ClockInContext from "../../../ClockInContext";
 
 import "../ClockInHistory/ClockInHistory.css";
 
 const ClockInHistory = () => {
-  const date = new Date();
-  const hours = date.getHours() + ":" + date.getMinutes();
-
+  const { clockInValue, timeValue } = useContext(ClockInContext);
+  const [clockInRow, setClockInRow] = clockInValue;
+  const [time, setTime] = timeValue;
   const data = Employee.people;
 
   return (
@@ -26,7 +29,7 @@ const ClockInHistory = () => {
                 <span>{`${emp.name} bëri Clock In në orën`}</span>
                 <span className="line"></span>
               </div>
-              <div className="END">{hours}</div>
+              <div className="END">{moment(time).format("HH:mm")}</div>
             </div>
           );
         })}

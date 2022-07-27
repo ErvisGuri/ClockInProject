@@ -1,111 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
-import { Dropdown } from "antd";
-
-import ScrollToBottom from "react-scroll-to-bottom";
+import { Select } from "antd";
 
 import "antd/dist/antd.css";
 import "../ClockActions/clockAction.css";
 
-//Material UI
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import ClockInContext from "../../../ClockInContext";
 
 import Employee from "../../../DataFake";
 import { Button } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
 import { TimePicker } from "antd";
 import moment from "moment";
 const format = "HH:mm";
-
-const initials = Employee.people;
+const { Option } = Select;
 
 const ClockAction = () => {
-  const [visible, setVisible] = useState(false);
-  const [time, setTime] = useState(new Date());
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [clockInTime, setClockInTime] = useState("");
+  const { clockInValue, timeValue } = useContext(ClockInContext);
+  const [clockInRow, setClockInRow] = clockInValue;
+  const [time, setTime] = timeValue;
   const [selectedName, setSelectedName] = useState("");
-  const [clockInRow, setClockInRow] = useState(initials);
+  const data = Employee.people;
 
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  useEffect(() => {
-    setInterval(() => {
-      setTime(new Date());
-    }, 30000);
-  }, []);
-
-  const hours = time.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-  });
+  // console.log(moment().format(format));
 
   const handleSubmit = () => {
     const id = Math.floor(Math.random() * 1000);
+    // setClockInTime(moment().format(format));
     const newClockIn = {
       name: selectedName,
-      time: hours,
+      time: time,
       id: id,
     };
-    setClockInRow(newClockIn);
+    const row = data.push(newClockIn);
+    setClockInRow(row);
   };
 
   console.log(clockInRow);
 
-  const handleVisibleChange = (flag) => {
-    setVisible(flag);
+  const handleChange = (value) => {
+    setSelectedName(value);
   };
 
-  const data = Employee.people;
-
-  const handleSelected = (e) => {
-    console.log(setSelectedName(e.target.value));
+  const onChangeTime = (time) => {
+    setTime(time.valueOf());
   };
-
-  const menu = (
-    <ScrollToBottom className="popupScroll">
-      <div className="popup">
-        {data?.map((emp, key) => {
-          return (
-            <div key={key}>
-              <p defaultValue={emp.name} onClick={handleSelected}>
-                {emp.name}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    </ScrollToBottom>
-  );
 
   return (
     <div className="actions_container">
       <div className="header-actions">
         <span>Veprime Turni</span>
-        <Dropdown
-          overlay={menu}
-          onVisibleChange={handleVisibleChange}
-          visible={visible}
+        <Select
+          defaultValue="Users"
+          style={{
+            width: 100,
+            height: 30,
+          }}
+          onChange={handleChange}
         >
-          <MoreOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
-        </Dropdown>
+          {data?.map((emp, key) => (
+            <Option key={key} value={emp.name}>
+              {emp.name}
+            </Option>
+          ))}
+        </Select>
       </div>
       <div className="body-actions">
         <p style={{ textAlign: "center", marginTop: "6px", color: "red" }}>
-          {hours}
+          {moment().format(format)}
         </p>
-        <p>{`Turni ka filluar në orën ${hours}!`}</p>
+        <p>{`Turni ka filluar në orën ${moment(time).format("HH:mm")}!`}</p>
         <div className="clock-button">
           <Button
             type="primary"
@@ -116,7 +79,8 @@ const ClockAction = () => {
             Fillo Turnin
           </Button>
           <TimePicker
-            defaultValue={moment(hours?.toLocaleString(), format)}
+            defaultValue={time}
+            onChange={onChangeTime}
             format={format}
             style={{ width: 90 }}
           />

@@ -3,7 +3,7 @@
     flex-direction: column;
     width: 600px;
     height: auto;
-    max-height: 421px;
+    /* max-height: 421px; */
     border-radius: 5px;
     background-color: white;
 }
