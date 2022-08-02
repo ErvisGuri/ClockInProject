@@ -15,30 +15,27 @@ const format = "HH:mm";
 const { Option } = Select;
 
 const ClockAction = () => {
-  const { clockInValue, timeValue } = useContext(ClockInContext);
-  const [clockInRow, setClockInRow] = clockInValue;
+  const { historyValue, usersValue, timeValue } = useContext(ClockInContext);
+  const [historyRows, setHistoryRows] = historyValue;
   const [time, setTime] = timeValue;
-  const [selectedName, setSelectedName] = useState("");
-  const data = Employee.people;
-
-  // console.log(moment().format(format));
+  const [users, setUsers] = usersValue;
+  const [selectedEmp, setSelectedEmp] = useState();
 
   const handleSubmit = () => {
     const id = Math.floor(Math.random() * 1000);
     // setClockInTime(moment().format(format));
     const newClockIn = {
-      name: selectedName,
+      name: selectedEmp.name,
+      empId: selectedEmp.id,
       time: time,
       id: id,
     };
-    const row = data.push(newClockIn);
-    setClockInRow(row);
+    setHistoryRows([...historyRows, newClockIn]);
   };
 
-  console.log(clockInRow);
-
   const handleChange = (value) => {
-    setSelectedName(value);
+    console.log(value);
+    setSelectedEmp(users[value]);
   };
 
   const onChangeTime = (time) => {
@@ -57,8 +54,8 @@ const ClockAction = () => {
           }}
           onChange={handleChange}
         >
-          {data?.map((emp, key) => (
-            <Option key={key} value={emp.name}>
+          {users?.map((emp, key) => (
+            <Option key={key} value={key}>
               {emp.name}
             </Option>
           ))}

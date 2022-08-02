@@ -10,10 +10,10 @@ import ClockInContext from "../../../ClockInContext";
 import "../ClockInHistory/ClockInHistory.css";
 
 const ClockInHistory = () => {
-  const { clockInValue, timeValue } = useContext(ClockInContext);
-  const [clockInRow, setClockInRow] = clockInValue;
+  const { historyValue, usersValue, timeValue } = useContext(ClockInContext);
+  const [historyRows, setHistoryRows] = historyValue;
+  const [usersRow, setUsersRow] = historyValue;
   const [time, setTime] = timeValue;
-  const data = Employee.people;
 
   return (
     <div className="history_container">
@@ -22,14 +22,14 @@ const ClockInHistory = () => {
         <MoreOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
       </div>
       <ScrollToBottom className="row_container">
-        {data?.map((emp, key) => {
+        {historyRows?.map((row, key) => {
           return (
             <div key={key} className="clockInRow">
               <div className="emri-line">
-                <span>{`${emp.name} bëri Clock In në orën`}</span>
+                <span>{`${row.name} bëri Clock In në orën`}</span>
                 <span className="line"></span>
               </div>
-              <div className="END">{moment(time).format("HH:mm")}</div>
+              <div className="END">{moment(row.time).format("HH:mm")}</div>
             </div>
           );
         })}

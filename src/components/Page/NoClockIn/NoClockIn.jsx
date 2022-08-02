@@ -5,9 +5,14 @@ import { MoreOutlined } from "@ant-design/icons";
 import ScrollToBottom from "react-scroll-to-bottom";
 
 import "../NoClockIn/NoClockIn.css";
+import ClockInContext from "../../../ClockInContext";
 
 const NoClockIn = () => {
-  const data = Employee.people;
+  const { historyValue, usersValue } = useContext(ClockInContext);
+  const [historyRows, setHistoryRows] = historyValue;
+  const [usersRow, setUsersRow] = historyValue;
+
+  const data = ;
 
   return (
     <div className="NoClockIn_container">
