@@ -17,6 +17,12 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
     console.log(`User Connected: ${socket.id}`)
+
+    socket.on("send_record", (data) => {
+        console.log(`User ${socket.id} ${data}`)
+        socket.broadcast.emit("receive_record", data)
+    })
+
 })
 
 server.listen(3001, () => {

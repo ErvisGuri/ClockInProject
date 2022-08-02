@@ -7,20 +7,20 @@ const initials = Employees.people;
 
 export function ClockInProvider({ children }) {
   const [users, setUsers] = useState(initials);
-  const [historyRows, setHistoryRows] = useState([]);
+  const [historyRows, setHistoryRows] = useState(() => JSON.parse(localStorage.getItem('history')) || []);
   const [time, setTime] = useState("");
 
-  // useEffect(() => {
-  //     const clockIn = JSON.parse(localStorage.getItem('ClockIn'));
-  //     if (clockIn) {
-  //         setClockInRow(!clockIn);
-  //     }
-  // }, [])
+  useEffect(() => {
+    const clockIn = JSON.parse(localStorage.getItem('history'));
+    if (clockIn) {
+      setHistoryRows(historyRows);
+    }
+  }, [])
 
-  // //Saving data to local storage
-  // useEffect(() => {
-  //     localStorage.setItem('ClockIn', JSON.stringify(clockInRow));
-  // }, [clockInRow]);
+  //Saving data to local storage
+  useEffect(() => {
+    localStorage.setItem('history', JSON.stringify(historyRows));
+  }, [historyRows]);
 
   return (
     <ClockInContext.Provider

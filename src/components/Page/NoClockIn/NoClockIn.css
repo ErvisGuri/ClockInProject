@@ -31,5 +31,9 @@
 .row_container {
     width: 100%;
     height: 100%;
-    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+}
+
+.react-scroll-to-bottom--css-skkdk-1n7m0yu {
+    overflow: initial !important;
 }

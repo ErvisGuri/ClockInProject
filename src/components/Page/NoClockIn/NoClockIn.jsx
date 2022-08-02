@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
-import Employee from "../../../DataFake";
 import { MoreOutlined } from "@ant-design/icons";
 import ScrollToBottom from "react-scroll-to-bottom";
+import io from "socket.io-client";
 
 import "../NoClockIn/NoClockIn.css";
 import ClockInContext from "../../../ClockInContext";
+const socket = io.connect("http://localhost:3001");
 
 const NoClockIn = () => {
   const { historyValue, usersValue } = useContext(ClockInContext);
   const [historyRows, setHistoryRows] = historyValue;
-  const [usersRow, setUsersRow] = historyValue;
+  const [users] = usersValue;
 
-  const data = ;
+  const noClockedIn = findNoClockedInEmps();
+
+  function findNoClockedInEmps() {
+    var noClockedIn = [];
+    users.forEach((obj) => {
+      if (historyRows?.filter((row) => row.empId === obj.id).length === 0) {
+        noClockedIn.push(obj);
+      }
+    });
+    return noClockedIn;
+  }
 
   return (
     <div className="NoClockIn_container">
@@ -21,11 +32,11 @@ const NoClockIn = () => {
         <MoreOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
       </div>
       <ScrollToBottom className="row_container">
-        {data?.map((emp, key) => {
+        {noClockedIn?.map((emp, key) => {
           return (
             <div key={key} className="body-NoClckIn">
               <p>{emp.name}</p>
-              <p>{emp.depatament}</p>
+              <p>{emp.departament}</p>
             </div>
           );
         })}

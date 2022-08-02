@@ -5,14 +5,16 @@ import { Select } from "antd";
 import "antd/dist/antd.css";
 import "../ClockActions/clockAction.css";
 
+import io from "socket.io-client";
+
 import ClockInContext from "../../../ClockInContext";
 
-import Employee from "../../../DataFake";
 import { Button } from "antd";
 import { TimePicker } from "antd";
 import moment from "moment";
 const format = "HH:mm";
 const { Option } = Select;
+const socket = io.connect("http://localhost:3001");
 
 const ClockAction = () => {
   const { historyValue, usersValue, timeValue } = useContext(ClockInContext);
@@ -20,27 +22,36 @@ const ClockAction = () => {
   const [time, setTime] = timeValue;
   const [users, setUsers] = usersValue;
   const [selectedEmp, setSelectedEmp] = useState();
+  const [shift, setShift] = useState(false);
 
-  const handleSubmit = () => {
-    const id = Math.floor(Math.random() * 1000);
-    // setClockInTime(moment().format(format));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const newClockIn = {
       name: selectedEmp.name,
       empId: selectedEmp.id,
       time: time,
-      id: id,
     };
+    await socket.emit("send_record", newClockIn);
     setHistoryRows([...historyRows, newClockIn]);
   };
 
   const handleChange = (value) => {
-    console.log(value);
     setSelectedEmp(users[value]);
   };
 
   const onChangeTime = (time) => {
     setTime(time.valueOf());
   };
+
+  console.log(historyRows);
+
+  useEffect(() => {
+    socket.on("receive_record", (data) => {
+      console.log("2", data);
+      setHistoryRows([...historyRows, data]);
+      console.log(data);
+    });
+  }, [socket]);
 
   return (
     <div className="actions_container">
@@ -66,22 +77,42 @@ const ClockAction = () => {
           {moment().format(format)}
         </p>
         <p>{`Turni ka filluar në orën ${moment(time).format("HH:mm")}!`}</p>
-        <div className="clock-button">
-          <Button
-            type="primary"
-            danger
-            style={{ borderRadius: 8, width: 170, height: 30 }}
-            onClick={handleSubmit}
-          >
-            Fillo Turnin
-          </Button>
-          <TimePicker
-            defaultValue={time}
-            onChange={onChangeTime}
-            format={format}
-            style={{ width: 90 }}
-          />
-        </div>
+        {shift ? (
+          <div className="clock-button">
+            <Button
+              type="primary"
+              danger
+              style={{ borderRadius: 8, width: 170, height: 30 }}
+              onClick={handleSubmit}
+            >
+              Mbaroi Turnin
+            </Button>
+            <TimePicker
+              defaultValue={time}
+              onChange={onChangeTime}
+              format={format}
+              style={{ width: 90 }}
+            />
+          </div>
+        ) : (
+          <div className="clock-button">
+            <Button
+              type="primary"
+              danger
+              style={{ borderRadius: 8, width: 170, height: 30 }}
+              onClick={handleSubmit}
+            >
+              Filloi Turnin
+            </Button>
+            <TimePicker
+              defaultValue={time}
+              onChange={onChangeTime}
+              format={format}
+              style={{ width: 90 }}
+            />
+          </div>
+        )}
+
         <h3
           style={{
             paddingTop: "10px",
