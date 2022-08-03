@@ -11,7 +11,7 @@ import ClockInContext from "../../../ClockInContext";
 
 import { Button } from "antd";
 import { TimePicker } from "antd";
-import moment from "moment";
+import moment, { invalid } from "moment";
 const format = "HH:mm";
 const { Option } = Select;
 const socket = io.connect("http://localhost:3001");
@@ -24,14 +24,15 @@ const ClockAction = () => {
   const [selectedEmp, setSelectedEmp] = useState();
   const [shift, setShift] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const date = time;
+
+  const handleSubmit = () => {
     const newClockIn = {
       name: selectedEmp.name,
       empId: selectedEmp.id,
       time: time,
     };
-    await socket.emit("send_record", newClockIn);
+    socket.emit("send_record", newClockIn);
     setHistoryRows([...historyRows, newClockIn]);
   };
 
@@ -42,8 +43,6 @@ const ClockAction = () => {
   const onChangeTime = (time) => {
     setTime(time.valueOf());
   };
-
-  console.log(historyRows);
 
   useEffect(() => {
     socket.on("receive_record", (data) => {
@@ -76,7 +75,9 @@ const ClockAction = () => {
         <p style={{ textAlign: "center", marginTop: "6px", color: "red" }}>
           {moment().format(format)}
         </p>
-        <p>{`Turni ka filluar në orën ${moment(time).format("HH:mm")}!`}</p>
+        <p>{`Turni ka filluar në orën ${
+          !!date ? moment(date).format("HH:mm") : ""
+        }!`}</p>
         {shift ? (
           <div className="clock-button">
             <Button

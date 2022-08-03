@@ -15,7 +15,7 @@ const ClockInLate = () => {
   const time1 = moment(1659439800505).format("HH:mm");
   const time2 = moment(1659440100235).format("HH:mm");
 
-  const lest = historyRows?.filter?.(
+  const late = historyRows?.filter?.(
     (el) => moment(el.time).format("HH:mm") > time1
   );
 
@@ -35,11 +35,11 @@ const ClockInLate = () => {
   return (
     <div className="ClockIn_Container">
       <div className="header-ClockIn">
-        <p>Clock In me vonesë (sot)</p>
+        <p>{`Clock In me vonesë (${late.length})`}</p>
         <MoreOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
       </div>
       <ScrollToBottom className="row_container">
-        {lest.map((row, key) => {
+        {late.map((row, key) => {
           return (
             <div key={key} className="clockLateRow">
               <div className="emri-line-late">

@@ -31,6 +31,8 @@ const ClockInHistory = () => {
     }
   };
 
+  console.log(historyRows);
+
   return (
     <div className="history_container">
       <div className="header-history">

@@ -25,10 +25,16 @@ const NoClockIn = () => {
     return noClockedIn;
   }
 
+  useEffect(() => {
+    socket.on("receive_record", (data) => {
+      setHistoryRows([...historyRows, data]);
+    });
+  }, [socket]);
+
   return (
     <div className="NoClockIn_container">
       <div className="header-NoClockIn">
-        <p>Punonjësit që nuk kanë bërë Clock In (sot)</p>
+        <p>{`Punonjësit që nuk kanë bërë Clock In (${noClockedIn.length})`}</p>
         <MoreOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
       </div>
       <ScrollToBottom className="row_container">
