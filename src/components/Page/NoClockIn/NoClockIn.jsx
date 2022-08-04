@@ -13,7 +13,11 @@ const NoClockIn = () => {
   const [historyRows, setHistoryRows] = historyValue;
   const [users] = usersValue;
 
-  const noClockedIn = findNoClockedInEmps();
+  var noClockedIn = [];
+
+  useEffect(() => {
+    noClockedIn = findNoClockedInEmps();
+  }, [historyRows]);
 
   function findNoClockedInEmps() {
     var noClockedIn = [];
@@ -25,11 +29,7 @@ const NoClockIn = () => {
     return noClockedIn;
   }
 
-  useEffect(() => {
-    socket.on("receive_record", (data) => {
-      setHistoryRows([...historyRows, data]);
-    });
-  }, [socket]);
+  console.log(noClockedIn);
 
   return (
     <div className="NoClockIn_container">

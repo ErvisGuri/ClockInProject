@@ -13,7 +13,7 @@ const socket = io.connect("http://localhost:3001");
 
 const ClockInHistory = () => {
   const { historyValue } = useContext(ClockInContext);
-  const [historyRows] = historyValue;
+  const [historyRows, setHistoryRows] = historyValue;
 
   const time1 = moment(1659439800505).format("HH:mm");
   const time2 = moment(1659440100235).format("HH:mm");
@@ -31,7 +31,13 @@ const ClockInHistory = () => {
     }
   };
 
-  console.log(historyRows);
+  socket.on("receive_record", (data) => {
+    let newClockIn = data.newRow;
+    let newLength = data.newLength;
+    if (newLength > historyRows.length) {
+      setHistoryRows([...historyRows, newClockIn]);
+    }
+  });
 
   return (
     <div className="history_container">

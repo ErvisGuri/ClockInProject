@@ -17,7 +17,7 @@ export function ClockInProvider({ children }) {
     }
   }, [])
 
-  //Saving data to local storage
+  // Saving data to local storage
   useEffect(() => {
     localStorage.setItem('history', JSON.stringify(historyRows));
   }, [historyRows]);

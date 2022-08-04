@@ -12,6 +12,7 @@ import ClockInContext from "../../../ClockInContext";
 import { Button } from "antd";
 import { TimePicker } from "antd";
 import moment, { invalid } from "moment";
+
 const format = "HH:mm";
 const { Option } = Select;
 const socket = io.connect("http://localhost:3001");
@@ -32,7 +33,10 @@ const ClockAction = () => {
       empId: selectedEmp.id,
       time: time,
     };
-    socket.emit("send_record", newClockIn);
+    socket.emit("send_record", {
+      newRow: newClockIn,
+      newLength: historyRows.length + 1,
+    });
     setHistoryRows([...historyRows, newClockIn]);
   };
 
@@ -43,14 +47,6 @@ const ClockAction = () => {
   const onChangeTime = (time) => {
     setTime(time.valueOf());
   };
-
-  useEffect(() => {
-    socket.on("receive_record", (data) => {
-      console.log("2", data);
-      setHistoryRows([...historyRows, data]);
-      console.log(data);
-    });
-  }, [socket]);
 
   return (
     <div className="actions_container">
@@ -73,7 +69,7 @@ const ClockAction = () => {
       </div>
       <div className="body-actions">
         <p style={{ textAlign: "center", marginTop: "6px", color: "red" }}>
-          {moment().format(format)}
+          {moment().format("HH:mm")}
         </p>
         <p>{`Turni ka filluar në orën ${
           !!date ? moment(date).format("HH:mm") : ""
