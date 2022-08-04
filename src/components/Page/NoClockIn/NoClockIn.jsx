@@ -1,22 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { MoreOutlined } from "@ant-design/icons";
 import ScrollToBottom from "react-scroll-to-bottom";
-import io from "socket.io-client";
 
 import "../NoClockIn/NoClockIn.css";
 import ClockInContext from "../../../ClockInContext";
-const socket = io.connect("http://localhost:3001");
 
 const NoClockIn = () => {
   const { historyValue, usersValue } = useContext(ClockInContext);
   const [historyRows, setHistoryRows] = historyValue;
   const [users] = usersValue;
-
-  var noClockedIn = [];
+  const [noClockedIn, setNoClockedIn] = useState(findNoClockedInEmps());
 
   useEffect(() => {
-    noClockedIn = findNoClockedInEmps();
+    setNoClockedIn(findNoClockedInEmps());
   }, [historyRows]);
 
   function findNoClockedInEmps() {
@@ -29,12 +26,10 @@ const NoClockIn = () => {
     return noClockedIn;
   }
 
-  console.log(noClockedIn);
-
   return (
     <div className="NoClockIn_container">
       <div className="header-NoClockIn">
-        <p>{`Punonjësit që nuk kanë bërë Clock In (${noClockedIn.length})`}</p>
+        <p>{`Punonjësit që nuk kanë bërë Clock In (${noClockedIn?.length})`}</p>
         <MoreOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
       </div>
       <ScrollToBottom className="row_container">

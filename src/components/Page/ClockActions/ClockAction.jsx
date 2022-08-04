@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import { Select } from "antd";
 
@@ -11,7 +11,7 @@ import ClockInContext from "../../../ClockInContext";
 
 import { Button } from "antd";
 import { TimePicker } from "antd";
-import moment, { invalid } from "moment";
+import moment from "moment";
 
 const format = "HH:mm";
 const { Option } = Select;
@@ -21,9 +21,9 @@ const ClockAction = () => {
   const { historyValue, usersValue, timeValue } = useContext(ClockInContext);
   const [historyRows, setHistoryRows] = historyValue;
   const [time, setTime] = timeValue;
-  const [users, setUsers] = usersValue;
+  const [users] = usersValue;
   const [selectedEmp, setSelectedEmp] = useState();
-  const [shift, setShift] = useState(false);
+  const [shift] = useState(false);
 
   const date = time;
 

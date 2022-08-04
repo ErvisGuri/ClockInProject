@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import ScrollToBottom from "react-scroll-to-bottom";
 import { MoreOutlined } from "@ant-design/icons";
